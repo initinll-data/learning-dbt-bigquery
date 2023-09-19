@@ -1,13 +1,30 @@
-dbt_ecommerce_project:
+dbt_ecommerce_project: # this needs to match the profile: in your dbt_project.yml file
+  target: dev # The default for any dbt commands
   outputs:
     dev:
-      dataset: dbt_ecommerce
+      # To use this, first run (in your terminal): export BIGQUERY_PROJECT="your_project_name"
+      # Then dbt will recognise the variable
+      # dataset: "{{ env_var('BIGQUERY_PROJECT') }}"
+      dataset: dbt_ecommerce # Replace this with dbt_your_name, e.g. dbt_bob
       job_execution_timeout_seconds: 300
       job_retries: 1
       location: US
       method: oauth
-      priority: interactive
+      priority: interactive  # BigQuery can use "batch" or "interactive". https://cloud.google.com/bigquery/docs/running-queries
       project: nitins-projects
-      threads: 60
+      threads: 64 # Max number of concurrent things running at once
       type: bigquery
-  target: dev
+    # You won't use this, but an example of using a different target
+    production:
+      # To use this, first run (in your terminal): export BIGQUERY_PROJECT="your_project_name"
+      # Then dbt will recognise the variable
+      # dataset: "{{ env_var('BIGQUERY_PROJECT') }}"
+      dataset: dbt_ecommerce # Replace this with dbt_your_name, e.g. dbt_bob
+      job_execution_timeout_seconds: 300
+      job_retries: 1
+      location: US
+      method: oauth
+      priority: interactive  # BigQuery can use "batch" or "interactive". https://cloud.google.com/bigquery/docs/running-queries
+      project: nitins-projects
+      threads: 64 # Max number of concurrent things running at once
+      type: bigquery
